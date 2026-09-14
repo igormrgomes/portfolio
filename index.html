@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Igor — Portfólio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">igor<span>.dev</span></div>
+    <div class="nav-links">
+      <a href="#sobre">Sobre</a>
+      <a href="#habilidades">Habilidades</a>
+      <a href="#projetos">Projetos</a>
+      <a href="#formacao">Formação</a>
+      <a href="#contato">Contato</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero wrap" id="topo">
+  <div>
+    <span class="tag">💻 Estudante de Informática</span>
+    <h1>Olá, eu sou o <span class="accent">Igor</span></h1>
+    <p class="lead">Estudante do Ensino Médio Técnico em Informática (2º ano), apaixonado por programação, desenvolvimento web e tecnologia. Aqui você encontra meus projetos e minha trajetória na área.</p>
+    <div class="btn-row">
+      <a href="#projetos" class="btn btn-primary">Ver Projetos →</a>
+      <a href="#contato" class="btn btn-secondary">Fale Comigo</a>
+    </div>
+  </div>
+  <div class="code-card">
+    <div class="dots">
+      <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+    </div>
+    <pre><span class="tk-kw">const</span> <span class="tk-plain">estudante</span> <span class="tk-plain">= {</span>
+  <span class="tk-plain">nome:</span> <span class="tk-str">'Igor'</span><span class="tk-plain">,</span>
+  <span class="tk-plain">curso:</span> <span class="tk-str">'Informática'</span><span class="tk-plain">,</span>
+  <span class="tk-plain">ano:</span> <span class="tk-num">2</span><span class="tk-plain">,</span>
+  <span class="tk-plain">skills: [</span><span class="tk-str">'HTML','CSS','JS'</span><span class="tk-plain">],</span>
+<span class="tk-plain">};</span></pre>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section class="alt" id="sobre">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">// sobre-mim</div>
+      <h2>Sobre Mim</h2>
+    </div>
+    <div class="about-grid">
+      <div class="photo-frame">👤 Sua foto aqui</div>
+      <div class="about-text">
+        <p>Sou estudante do 2º ano do Ensino Médio Técnico em Informática, sempre em busca de aprender coisas novas sobre tecnologia. Gosto de resolver problemas com lógica e transformar ideias em projetos reais usando código.</p>
+        <p>Atualmente estudo HTML, CSS, JavaScript, lógica de programação e banco de dados, além de me aprofundar em front-end e boas práticas de desenvolvimento web.</p>
+        <div class="chip-row">
+          <span class="chip">🎓 Ensino Médio Técnico</span>
+          <span class="chip">📚 2º Ano</span>
+          <span class="chip">💻 Foco em Front-End</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HABILIDADES -->
+<section id="habilidades">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">// habilidades</div>
+      <h2>Habilidades Técnicas</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card"><div class="skill-icon">&lt;/&gt;</div><h3>HTML5</h3><p>Estruturação semântica de páginas web</p></div>
+      <div class="skill-card"><div class="skill-icon">🎨</div><h3>CSS3</h3><p>Estilização, layouts responsivos e animações</p></div>
+      <div class="skill-card"><div class="skill-icon">⚡</div><h3>JavaScript</h3><p>Lógica, interatividade e manipulação do DOM</p></div>
+      <div class="skill-card"><div class="skill-icon">🗄️</div><h3>Banco de Dados</h3><p>Modelagem e consultas SQL</p></div>
+      <div class="skill-card"><div class="skill-icon">🖥️</div><h3>Front-End</h3><p>Interfaces modernas e responsivas</p></div>
+      <div class="skill-card"><div class="skill-icon">🧠</div><h3>Lógica de Programação</h3><p>Resolução de problemas e algoritmos</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJETOS -->
+<section class="alt" id="projetos">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">// projetos</div>
+      <h2>Meus Projetos</h2>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-thumb">🌐</div>
+        <div class="project-body">
+          <h3>Landing Page Responsiva</h3>
+          <p>Site institucional construído com HTML, CSS e JavaScript, com layout responsivo para mobile e desktop.</p>
+          <div class="tag-row"><span class="mini-tag">HTML</span><span class="mini-tag">CSS</span><span class="mini-tag">JS</span></div>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-thumb">📝</div>
+        <div class="project-body">
+          <h3>Sistema de Cadastro</h3>
+          <p>Aplicação com formulário de cadastro e conexão a banco de dados para armazenar informações de usuários.</p>
+          <div class="tag-row"><span class="mini-tag">JS</span><span class="mini-tag">SQL</span><span class="mini-tag">Back-end</span></div>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-thumb">🎮</div>
+        <div class="project-body">
+          <h3>Mini Jogo em JavaScript</h3>
+          <p>Jogo interativo no navegador utilizando lógica de programação e manipulação do DOM.</p>
+          <div class="tag-row"><span class="mini-tag">JS</span><span class="mini-tag">DOM</span><span class="mini-tag">Lógica</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMAÇÃO -->
+<section id="formacao">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">// formação</div>
+      <h2>Formação Acadêmica</h2>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item current">
+        <div class="timeline-marker"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+        <div class="timeline-card">
+          <div class="timeline-period">2025 – ATUAL</div>
+          <h3>Ensino Médio Técnico em Informática</h3>
+          <p>Cursando o 2º ano, com disciplinas de lógica de programação, desenvolvimento web, banco de dados e front-end.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+        <div class="timeline-card">
+          <div class="timeline-period">2024</div>
+          <h3>Introdução à Programação</h3>
+          <p>Primeiros contatos com lógica de programação, HTML e CSS durante o 1º ano do curso técnico.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="timeline-card">
+          <div class="timeline-period">Em andamento</div>
+          <h3>Estudos Independentes</h3>
+          <p>Aprofundamento em JavaScript e front-end através de cursos online e projetos pessoais.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section class="contact" id="contato">
+  <div class="wrap">
+    <div class="kicker">// contato</div>
+    <h2>Vamos Conversar?</h2>
+    <p class="lead" style="margin-left:auto;margin-right:auto;">Estou aberto a oportunidades de estágio, projetos e trocas sobre tecnologia. Entre em contato!</p>
+    <div class="contact-chips">
+      <a class="contact-chip" href="mailto:seuemail@exemplo.com">✉️ seuemail@exemplo.com</a>
+      <a class="contact-chip" href="https://linkedin.com/in/seunome" target="_blank" rel="noopener">💼 linkedin.com/in/seunome</a>
+      <a class="contact-chip" href="https://github.com/seunome" target="_blank" rel="noopener">🐙 github.com/seunome</a>
+    </div>
+    <footer>© 2026 Igor — Portfólio desenvolvido com dedicação e código.</footer>
+  </div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
