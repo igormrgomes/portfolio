@@ -3,179 +3,648 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Igor — Portfólio</title>
+<title>Igor — Desenvolvedor Front-End | Portfólio</title>
+<meta name="description" content="Portfólio de Igor, estudante de Ensino Médio Técnico em Informática. Projetos em HTML, CSS, JavaScript e banco de dados.">
+<meta name="author" content="Igor">
+
+<meta property="og:title" content="Igor — Desenvolvedor Front-End">
+<meta property="og:description" content="Estudante de Informática criando projetos web com HTML, CSS e JavaScript.">
+<meta property="og:type" content="website">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+
+<!-- Aplica o tema salvo ANTES da página pintar, evitando "piscada" branca -->
+<script>
+  (function () {
+    try {
+      var salvo = localStorage.getItem('tema');
+      if (!salvo) {
+        salvo = window.matchMedia('(prefers-color-scheme: light)').matches ? 'claro' : 'escuro';
+      }
+      document.documentElement.setAttribute('data-tema', salvo);
+    } catch (e) {
+      document.documentElement.setAttribute('data-tema', 'escuro');
+    }
+  })();
+</script>
 </head>
 <body>
 
-<header>
-  <nav>
-    <div class="logo">igor<span>.dev</span></div>
-    <div class="nav-links">
-      <a href="#sobre">Sobre</a>
-      <a href="#habilidades">Habilidades</a>
-      <a href="#projetos">Projetos</a>
-      <a href="#formacao">Formação</a>
-      <a href="#contato">Contato</a>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+<a href="#conteudo" class="skip-link">Pular para o conteúdo</a>
+
+<header id="header">
+  <nav class="wrap">
+    <a href="#topo" class="logo">igor<span>.dev</span></a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#inicio">Início</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#habilidades">Habilidades</a></li>
+      <li><a href="#projetos">Projetos</a></li>
+      <li><a href="#formacao">Formação</a></li>
+      <li><a href="#contato" class="nav-cta">Contato</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <!-- BOTÃO DE TEMA CLARO/ESCURO -->
+      <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro e escuro" title="Alternar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"/>
+          <path d="M12 2v2M12 20v2M4.2 4.2l1.5 1.5M18.3 18.3l1.5 1.5M2 12h2M20 12h2M4.2 19.8l1.5-1.5M18.3 5.7l1.5-1.5"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+        </svg>
+      </button>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
   </nav>
 </header>
 
-<!-- HERO -->
-<section class="hero wrap" id="topo">
-  <div>
-    <span class="tag">💻 Estudante de Informática</span>
-    <h1>Olá, eu sou o <span class="accent">Igor</span></h1>
-    <p class="lead">Estudante do Ensino Médio Técnico em Informática (2º ano), apaixonado por programação, desenvolvimento web e tecnologia. Aqui você encontra meus projetos e minha trajetória na área.</p>
-    <div class="btn-row">
-      <a href="#projetos" class="btn btn-primary">Ver Projetos →</a>
-      <a href="#contato" class="btn btn-secondary">Fale Comigo</a>
+<main id="conteudo">
+
+<!-- ================= INÍCIO / HERO ================= -->
+<section class="hero" id="inicio">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="wrap hero-grid" id="topo">
+    <div class="hero-content">
+      <span class="tag reveal">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        Disponível para estágio
+      </span>
+
+      <h1 class="reveal">Olá, eu sou o <span class="accent">Igor</span></h1>
+
+      <!-- INTERAÇÃO JS 1: EFEITO DE DIGITAÇÃO (text typing) -->
+      <p class="hero-role reveal">
+        <span class="mono prompt">&gt;</span>
+        <span id="typed" aria-live="polite"></span><span class="caret" aria-hidden="true"></span>
+      </p>
+
+      <p class="lead reveal">
+        Estudante do 2º ano do Ensino Médio Técnico em Informática. Transformo
+        ideias em interfaces funcionais usando HTML, CSS e JavaScript — sempre
+        buscando código limpo e experiências que funcionam bem em qualquer tela.
+      </p>
+
+      <div class="btn-row reveal">
+        <a href="#projetos" class="btn btn-primary">Ver Projetos <span aria-hidden="true">→</span></a>
+        <a href="#contato" class="btn btn-secondary">Fale Comigo</a>
+      </div>
+
+      <div class="social-row reveal">
+        <a href="https://github.com/seunome" target="_blank" rel="noopener" class="social-link" aria-label="Meu GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10 10 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg>
+        </a>
+        <a href="https://linkedin.com/in/seunome" target="_blank" rel="noopener" class="social-link" aria-label="Meu LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 18V10H5.67v8h2.67zM7 8.88a1.55 1.55 0 1 0 0-3.1 1.55 1.55 0 0 0 0 3.1zM18.34 18v-4.57c0-2.42-1.29-3.54-3.02-3.54-1.39 0-2.01.77-2.36 1.3V10h-2.67v8h2.67v-4.47c0-.24.02-.47.09-.64.19-.47.62-.96 1.35-.96.95 0 1.33.73 1.33 1.79V18h2.61z"/></svg>
+        </a>
+        <a href="mailto:seuemail@exemplo.com" class="social-link" aria-label="Meu e-mail">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.24-8 4.72-8-4.72V6l8 4.72L20 6v2.24z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="code-card reveal">
+      <div class="code-head">
+        <div class="dots" aria-hidden="true">
+          <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+        </div>
+        <span class="code-file mono">perfil.js</span>
+      </div>
+      <pre><code><span class="tk-kw">const</span> <span class="tk-var">estudante</span> <span class="tk-op">=</span> {
+  <span class="tk-prop">nome</span>: <span class="tk-str">'Igor'</span>,
+  <span class="tk-prop">curso</span>: <span class="tk-str">'Técnico em Informática'</span>,
+  <span class="tk-prop">ano</span>: <span class="tk-num">2</span>,
+  <span class="tk-prop">stack</span>: [<span class="tk-str">'HTML'</span>, <span class="tk-str">'CSS'</span>, <span class="tk-str">'JS'</span>],
+  <span class="tk-prop">aprendendo</span>: <span class="tk-str">'sempre'</span>,
+
+  <span class="tk-fn">codar</span>() {
+    <span class="tk-kw">return</span> <span class="tk-str">'☕ + 💻 = 🚀'</span>;
+  }
+};</code></pre>
     </div>
   </div>
-  <div class="code-card">
-    <div class="dots">
-      <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+
+  <div class="wrap">
+    <div class="stats reveal">
+      <div class="stat"><span class="stat-num" data-count="3">0</span><span class="stat-label">Projetos concluídos</span></div>
+      <div class="stat"><span class="stat-num" data-count="6">0</span><span class="stat-label">Tecnologias estudadas</span></div>
+      <div class="stat"><span class="stat-num" data-count="2">0</span><span class="stat-label">Anos no curso técnico</span></div>
+      <div class="stat"><span class="stat-num" data-count="100" data-suffix="%">0</span><span class="stat-label">Vontade de aprender</span></div>
     </div>
-    <pre><span class="tk-kw">const</span> <span class="tk-plain">estudante</span> <span class="tk-plain">= {</span>
-  <span class="tk-plain">nome:</span> <span class="tk-str">'Igor'</span><span class="tk-plain">,</span>
-  <span class="tk-plain">curso:</span> <span class="tk-str">'Informática'</span><span class="tk-plain">,</span>
-  <span class="tk-plain">ano:</span> <span class="tk-num">2</span><span class="tk-plain">,</span>
-  <span class="tk-plain">skills: [</span><span class="tk-str">'HTML','CSS','JS'</span><span class="tk-plain">],</span>
-<span class="tk-plain">};</span></pre>
   </div>
 </section>
 
-<!-- SOBRE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>HTML5</span><span>•</span><span>CSS3</span><span>•</span><span>JavaScript</span><span>•</span>
+    <span>SQL</span><span>•</span><span>Git</span><span>•</span><span>Responsividade</span><span>•</span>
+    <span>DOM</span><span>•</span><span>Lógica de Programação</span><span>•</span>
+    <span>HTML5</span><span>•</span><span>CSS3</span><span>•</span><span>JavaScript</span><span>•</span>
+    <span>SQL</span><span>•</span><span>Git</span><span>•</span><span>Responsividade</span><span>•</span>
+    <span>DOM</span><span>•</span><span>Lógica de Programação</span><span>•</span>
+  </div>
+</div>
+
+<!-- ================= SOBRE ================= -->
 <section class="alt" id="sobre">
   <div class="wrap">
-    <div class="section-head">
-      <div class="kicker">// sobre-mim</div>
-      <h2>Sobre Mim</h2>
+    <div class="section-head reveal">
+      <div class="kicker mono">// sobre-mim</div>
+      <h2>Quem está por trás do código</h2>
     </div>
+
     <div class="about-grid">
-      <div class="photo-frame">👤 Sua foto aqui</div>
-      <div class="about-text">
-        <p>Sou estudante do 2º ano do Ensino Médio Técnico em Informática, sempre em busca de aprender coisas novas sobre tecnologia. Gosto de resolver problemas com lógica e transformar ideias em projetos reais usando código.</p>
-        <p>Atualmente estudo HTML, CSS, JavaScript, lógica de programação e banco de dados, além de me aprofundar em front-end e boas práticas de desenvolvimento web.</p>
-        <div class="chip-row">
-          <span class="chip">🎓 Ensino Médio Técnico</span>
-          <span class="chip">📚 2º Ano</span>
-          <span class="chip">💻 Foco em Front-End</span>
+      <div class="about-visual reveal">
+        <div class="photo-frame"><span>👤<br>Sua foto aqui</span></div>
+        <div class="about-badge">
+          <strong>2º ano</strong>
+          <span>Técnico em Informática</span>
         </div>
+      </div>
+
+      <div class="about-text reveal">
+        <p>
+          Sou estudante do 2º ano do Ensino Médio Técnico em Informática e descobri
+          na programação uma forma de resolver problemas de verdade. O que começou
+          como curiosidade virou rotina: estudar, testar, quebrar o código e
+          consertar até funcionar.
+        </p>
+        <p>
+          Profissionalmente, meu foco é <strong>desenvolvimento front-end</strong> —
+          HTML, CSS e JavaScript — e também estudo banco de dados e lógica de
+          programação no curso técnico. Prezo por layouts limpos, código organizado
+          e sites que funcionam bem tanto no computador quanto no celular.
+        </p>
+        <p>
+          Estou em busca da primeira oportunidade de <strong>estágio</strong> na
+          área, onde eu possa contribuir com o que já sei e aprender com
+          profissionais mais experientes.
+        </p>
+
+        <ul class="fact-list">
+          <li><span class="fact-icon">🎯</span><div><strong>Objetivo</strong>Primeira vaga de estágio em desenvolvimento web</div></li>
+          <li><span class="fact-icon">📍</span><div><strong>Localização</strong>Minas Gerais, Brasil</div></li>
+          <li><span class="fact-icon">💡</span><div><strong>Estudando agora</strong>JavaScript avançado e consumo de APIs</div></li>
+          <li><span class="fact-icon">🗣️</span><div><strong>Idiomas</strong>Português (nativo) e Inglês técnico</div></li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- HABILIDADES -->
+<!-- ================= HABILIDADES ================= -->
 <section id="habilidades">
   <div class="wrap">
-    <div class="section-head">
-      <div class="kicker">// habilidades</div>
+    <div class="section-head reveal">
+      <div class="kicker mono">// habilidades</div>
       <h2>Habilidades Técnicas</h2>
+      <p class="lead">Tecnologias que estudo no curso técnico e aplico nos meus projetos pessoais.</p>
     </div>
-    <div class="skills-grid">
-      <div class="skill-card"><div class="skill-icon">&lt;/&gt;</div><h3>HTML5</h3><p>Estruturação semântica de páginas web</p></div>
-      <div class="skill-card"><div class="skill-icon">🎨</div><h3>CSS3</h3><p>Estilização, layouts responsivos e animações</p></div>
-      <div class="skill-card"><div class="skill-icon">⚡</div><h3>JavaScript</h3><p>Lógica, interatividade e manipulação do DOM</p></div>
-      <div class="skill-card"><div class="skill-icon">🗄️</div><h3>Banco de Dados</h3><p>Modelagem e consultas SQL</p></div>
-      <div class="skill-card"><div class="skill-icon">🖥️</div><h3>Front-End</h3><p>Interfaces modernas e responsivas</p></div>
-      <div class="skill-card"><div class="skill-icon">🧠</div><h3>Lógica de Programação</h3><p>Resolução de problemas e algoritmos</p></div>
+
+    <div class="skills-layout">
+      <div class="skill-bars reveal">
+        <h3 class="sub-title">Nível de domínio</h3>
+        <div class="bar-item">
+          <div class="bar-top"><span>HTML5</span><span class="mono">85%</span></div>
+          <div class="bar-track"><div class="bar-fill" data-level="85"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-top"><span>CSS3</span><span class="mono">80%</span></div>
+          <div class="bar-track"><div class="bar-fill" data-level="80"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-top"><span>JavaScript</span><span class="mono">65%</span></div>
+          <div class="bar-track"><div class="bar-fill" data-level="65"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-top"><span>Banco de Dados (SQL)</span><span class="mono">55%</span></div>
+          <div class="bar-track"><div class="bar-fill" data-level="55"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-top"><span>Git &amp; GitHub</span><span class="mono">50%</span></div>
+          <div class="bar-track"><div class="bar-fill" data-level="50"></div></div>
+        </div>
+      </div>
+
+      <div class="skills-grid">
+        <article class="skill-card reveal">
+          <div class="skill-icon mono">&lt;/&gt;</div>
+          <h3>HTML5</h3>
+          <p>Estruturação semântica, acessibilidade básica e boas práticas de marcação.</p>
+        </article>
+        <article class="skill-card reveal">
+          <div class="skill-icon">🎨</div>
+          <h3>CSS3</h3>
+          <p>Flexbox, Grid, variáveis CSS, animações e layouts totalmente responsivos.</p>
+        </article>
+        <article class="skill-card reveal">
+          <div class="skill-icon">⚡</div>
+          <h3>JavaScript</h3>
+          <p>Manipulação do DOM, eventos, funções, arrays e lógica de interação.</p>
+        </article>
+        <article class="skill-card reveal">
+          <div class="skill-icon">🗄️</div>
+          <h3>Banco de Dados</h3>
+          <p>Modelagem de tabelas, relacionamentos e consultas SQL (SELECT, JOIN, etc).</p>
+        </article>
+        <article class="skill-card reveal">
+          <div class="skill-icon">📱</div>
+          <h3>Responsividade</h3>
+          <p>Media queries e design mobile-first para funcionar em qualquer tela.</p>
+        </article>
+        <article class="skill-card reveal">
+          <div class="skill-icon">🧠</div>
+          <h3>Lógica de Programação</h3>
+          <p>Algoritmos, estruturas de repetição, condicionais e resolução de problemas.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="soft-skills reveal">
+      <h3 class="sub-title">Competências pessoais</h3>
+      <div class="chip-row">
+        <span class="chip">Trabalho em equipe</span>
+        <span class="chip">Comunicação</span>
+        <span class="chip">Proatividade</span>
+        <span class="chip">Organização</span>
+        <span class="chip">Aprendizado rápido</span>
+        <span class="chip">Atenção a detalhes</span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- PROJETOS -->
+<!-- ================= PROJETOS ================= -->
 <section class="alt" id="projetos">
   <div class="wrap">
-    <div class="section-head">
-      <div class="kicker">// projetos</div>
+    <div class="section-head reveal">
+      <div class="kicker mono">// projetos</div>
       <h2>Meus Projetos</h2>
+      <p class="lead">Projetos desenvolvidos durante o curso técnico e nos meus estudos pessoais.</p>
     </div>
-    <div class="projects-grid">
-      <div class="project-card">
-        <div class="project-thumb">🌐</div>
+
+    <div class="filters reveal" role="group" aria-label="Filtrar projetos">
+      <button class="filter-btn is-active" data-filter="todos">Todos</button>
+      <button class="filter-btn" data-filter="web">Web</button>
+      <button class="filter-btn" data-filter="js">JavaScript</button>
+      <button class="filter-btn" data-filter="db">Banco de Dados</button>
+    </div>
+
+    <div class="projects-grid" id="projectsGrid">
+
+      <article class="project-card reveal" data-cat="web js">
+        <div class="project-thumb">
+          <span class="thumb-icon" aria-hidden="true">🌐</span>
+          <div class="project-overlay">
+            <!-- ABRE O MODAL -->
+            <button class="overlay-btn" data-projeto="landing">Ver detalhes</button>
+            <a href="https://github.com/seunome" target="_blank" rel="noopener" class="overlay-btn ghost">Código</a>
+          </div>
+        </div>
         <div class="project-body">
+          <div class="project-meta mono">
+            <span class="status-badge done">Concluído</span><span>2025</span>
+          </div>
           <h3>Landing Page Responsiva</h3>
-          <p>Site institucional construído com HTML, CSS e JavaScript, com layout responsivo para mobile e desktop.</p>
-          <div class="tag-row"><span class="mini-tag">HTML</span><span class="mini-tag">CSS</span><span class="mini-tag">JS</span></div>
+          <p>Site institucional completo com menu mobile, animações ao rolar e layout adaptado para celular, tablet e desktop.</p>
+          <ul class="feature-list">
+            <li>Design mobile-first</li>
+            <li>Menu hambúrguer em JavaScript</li>
+            <li>Formulário com validação</li>
+          </ul>
+          <div class="tag-row">
+            <span class="mini-tag">HTML</span><span class="mini-tag">CSS</span><span class="mini-tag">JavaScript</span>
+          </div>
         </div>
-      </div>
-      <div class="project-card">
-        <div class="project-thumb">📝</div>
+      </article>
+
+      <article class="project-card reveal" data-cat="db js">
+        <div class="project-thumb alt-grad">
+          <span class="thumb-icon" aria-hidden="true">📝</span>
+          <div class="project-overlay">
+            <button class="overlay-btn" data-projeto="cadastro">Ver detalhes</button>
+            <a href="https://github.com/seunome" target="_blank" rel="noopener" class="overlay-btn ghost">Código</a>
+          </div>
+        </div>
         <div class="project-body">
+          <div class="project-meta mono">
+            <span class="status-badge done">Concluído</span><span>2025</span>
+          </div>
           <h3>Sistema de Cadastro</h3>
-          <p>Aplicação com formulário de cadastro e conexão a banco de dados para armazenar informações de usuários.</p>
-          <div class="tag-row"><span class="mini-tag">JS</span><span class="mini-tag">SQL</span><span class="mini-tag">Back-end</span></div>
+          <p>Aplicação com formulário de cadastro conectado a banco de dados, com operações de inserir, listar, editar e excluir registros.</p>
+          <ul class="feature-list">
+            <li>CRUD completo</li>
+            <li>Modelagem de tabelas SQL</li>
+            <li>Validação de campos</li>
+          </ul>
+          <div class="tag-row">
+            <span class="mini-tag">JavaScript</span><span class="mini-tag">SQL</span><span class="mini-tag">Back-end</span>
+          </div>
         </div>
-      </div>
-      <div class="project-card">
-        <div class="project-thumb">🎮</div>
+      </article>
+
+      <article class="project-card reveal" data-cat="js">
+        <div class="project-thumb alt-grad-2">
+          <span class="thumb-icon" aria-hidden="true">🎮</span>
+          <div class="project-overlay">
+            <button class="overlay-btn" data-projeto="jogo">Ver detalhes</button>
+            <a href="https://github.com/seunome" target="_blank" rel="noopener" class="overlay-btn ghost">Código</a>
+          </div>
+        </div>
         <div class="project-body">
+          <div class="project-meta mono">
+            <span class="status-badge progress">Em progresso</span><span>2026</span>
+          </div>
           <h3>Mini Jogo em JavaScript</h3>
-          <p>Jogo interativo no navegador utilizando lógica de programação e manipulação do DOM.</p>
-          <div class="tag-row"><span class="mini-tag">JS</span><span class="mini-tag">DOM</span><span class="mini-tag">Lógica</span></div>
+          <p>Jogo interativo rodando direto no navegador, com sistema de pontuação, controle por teclado e níveis de dificuldade.</p>
+          <ul class="feature-list">
+            <li>Lógica de colisão</li>
+            <li>Sistema de pontuação</li>
+            <li>Manipulação do DOM</li>
+          </ul>
+          <div class="tag-row">
+            <span class="mini-tag">JavaScript</span><span class="mini-tag">DOM</span><span class="mini-tag">Lógica</span>
+          </div>
         </div>
+      </article>
+
+    </div>
+
+    <!-- LINK OBRIGATÓRIO PARA O GITHUB -->
+    <div class="github-cta reveal">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10 10 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg>
+      <div>
+        <strong>Veja todos os meus projetos no GitHub</strong>
+        <span>Código-fonte aberto de tudo que desenvolvo</span>
       </div>
+      <a href="https://github.com/seunome" target="_blank" rel="noopener" class="btn btn-primary">Acessar GitHub</a>
     </div>
   </div>
 </section>
 
-<!-- FORMAÇÃO -->
+<!-- ================= FORMAÇÃO ================= -->
 <section id="formacao">
   <div class="wrap">
-    <div class="section-head">
-      <div class="kicker">// formação</div>
-      <h2>Formação Acadêmica</h2>
+    <div class="section-head reveal">
+      <div class="kicker mono">// formação</div>
+      <h2>Formação &amp; Certificados</h2>
     </div>
-    <div class="timeline">
-      <div class="timeline-item current">
-        <div class="timeline-marker"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
-        <div class="timeline-card">
-          <div class="timeline-period">2025 – ATUAL</div>
-          <h3>Ensino Médio Técnico em Informática</h3>
-          <p>Cursando o 2º ano, com disciplinas de lógica de programação, desenvolvimento web, banco de dados e front-end.</p>
+
+    <div class="formacao-grid">
+      <div class="timeline">
+        <h3 class="sub-title reveal">Trajetória acadêmica</h3>
+
+        <div class="timeline-item current reveal">
+          <div class="timeline-marker"><span class="timeline-dot"></span><span class="timeline-line"></span></div>
+          <div class="timeline-card">
+            <div class="timeline-top">
+              <span class="timeline-period mono">2025 — ATUAL</span>
+              <span class="status-badge progress">Cursando</span>
+            </div>
+            <h4>Ensino Médio Técnico em Informática</h4>
+            <p class="timeline-org">2º ano — Curso Técnico Integrado</p>
+            <p>Disciplinas de desenvolvimento web, lógica de programação, banco de dados, redes e manutenção de computadores.</p>
+            <div class="tag-row">
+              <span class="mini-tag">Desenvolvimento Web</span><span class="mini-tag">Banco de Dados</span><span class="mini-tag">Redes</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-marker"><span class="timeline-dot"></span><span class="timeline-line"></span></div>
+          <div class="timeline-card">
+            <div class="timeline-top">
+              <span class="timeline-period mono">2024</span>
+              <span class="status-badge done">Concluído</span>
+            </div>
+            <h4>Introdução à Programação</h4>
+            <p class="timeline-org">1º ano — Curso Técnico</p>
+            <p>Primeiros contatos com lógica de programação, algoritmos, HTML e CSS. Base para tudo que estudo hoje.</p>
+            <div class="tag-row">
+              <span class="mini-tag">Algoritmos</span><span class="mini-tag">HTML</span><span class="mini-tag">CSS</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-marker"><span class="timeline-dot"></span></div>
+          <div class="timeline-card">
+            <div class="timeline-top">
+              <span class="timeline-period mono">EM ANDAMENTO</span>
+              <span class="status-badge progress">Contínuo</span>
+            </div>
+            <h4>Estudos Independentes</h4>
+            <p class="timeline-org">Cursos online e projetos próprios</p>
+            <p>Aprofundamento em JavaScript, consumo de APIs, Git e boas práticas de desenvolvimento fora da grade do curso.</p>
+            <div class="tag-row">
+              <span class="mini-tag">JavaScript</span><span class="mini-tag">Git</span><span class="mini-tag">APIs</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="timeline-item">
-        <div class="timeline-marker"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
-        <div class="timeline-card">
-          <div class="timeline-period">2024</div>
-          <h3>Introdução à Programação</h3>
-          <p>Primeiros contatos com lógica de programação, HTML e CSS durante o 1º ano do curso técnico.</p>
+
+      <aside class="certs">
+        <h3 class="sub-title reveal">Certificados</h3>
+        <div class="cert-card reveal">
+          <span class="cert-icon">📜</span>
+          <div><strong>Lógica de Programação</strong><span class="cert-meta mono">Curso online · 2025</span></div>
         </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-marker"><div class="timeline-dot"></div></div>
-        <div class="timeline-card">
-          <div class="timeline-period">Em andamento</div>
-          <h3>Estudos Independentes</h3>
-          <p>Aprofundamento em JavaScript e front-end através de cursos online e projetos pessoais.</p>
+        <div class="cert-card reveal">
+          <span class="cert-icon">📜</span>
+          <div><strong>HTML5 e CSS3</strong><span class="cert-meta mono">Curso online · 2025</span></div>
+        </div>
+        <div class="cert-card reveal">
+          <span class="cert-icon">📜</span>
+          <div><strong>JavaScript Básico</strong><span class="cert-meta mono">Curso online · 2026</span></div>
+        </div>
+        <p class="cert-note mono">// substitua pelos seus certificados reais</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTATO ================= -->
+<section class="contact alt" id="contato">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="kicker mono">// contato</div>
+      <h2>Vamos Conversar?</h2>
+      <p class="lead center-lead">
+        Estou aberto a oportunidades de estágio, projetos colaborativos e trocas
+        sobre tecnologia. Me manda uma mensagem!
+      </p>
+    </div>
+
+    <div class="contact-grid">
+      <!-- FORMULÁRIO OBRIGATÓRIO: nome, telefone, email, mensagem -->
+      <form class="contact-form reveal" id="contactForm" novalidate>
+        <div class="field">
+          <label for="nome">Nome completo *</label>
+          <input type="text" id="nome" name="nome" placeholder="Seu nome" autocomplete="name" maxlength="60" required>
+          <span class="error-msg" id="err-nome"></span>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="telefone">Telefone *</label>
+            <!-- máscara: (00) 00000-0000 -->
+            <input type="tel" id="telefone" name="telefone" placeholder="(31) 99999-9999" autocomplete="tel" inputmode="numeric" maxlength="15" required>
+            <span class="error-msg" id="err-telefone"></span>
+          </div>
+          <div class="field">
+            <label for="email">E-mail *</label>
+            <input type="email" id="email" name="email" placeholder="seu@email.com" autocomplete="email" maxlength="80" required>
+            <span class="error-msg" id="err-email"></span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="assunto">Assunto</label>
+          <select id="assunto" name="assunto">
+            <option value="Oportunidade de estágio">Oportunidade de estágio</option>
+            <option value="Projeto freelance">Projeto freelance</option>
+            <option value="Dúvida técnica">Dúvida técnica</option>
+            <option value="Outro assunto">Outro assunto</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="mensagem">Mensagem *</label>
+          <textarea id="mensagem" name="mensagem" rows="5" placeholder="Escreva sua mensagem..." maxlength="500" required></textarea>
+          <div class="field-foot">
+            <span class="error-msg" id="err-mensagem"></span>
+            <span class="char-count mono" id="charCount">0 / 500</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary full" id="btnEnviar">Enviar Mensagem</button>
+      </form>
+
+      <div class="contact-side reveal">
+        <h3 class="sub-title">Canais diretos</h3>
+        <a class="contact-chip" href="mailto:seuemail@exemplo.com">
+          <span class="chip-icon">✉️</span>
+          <div><strong>E-mail</strong><span>seuemail@exemplo.com</span></div>
+        </a>
+        <a class="contact-chip" href="tel:+5531999999999">
+          <span class="chip-icon">📱</span>
+          <div><strong>Telefone</strong><span>(31) 99999-9999</span></div>
+        </a>
+        <a class="contact-chip" href="https://linkedin.com/in/seunome" target="_blank" rel="noopener">
+          <span class="chip-icon">💼</span>
+          <div><strong>LinkedIn</strong><span>/in/seunome</span></div>
+        </a>
+        <a class="contact-chip" href="https://github.com/seunome" target="_blank" rel="noopener">
+          <span class="chip-icon">🐙</span>
+          <div><strong>GitHub</strong><span>/seunome</span></div>
+        </a>
+
+        <div class="availability">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <div><strong>Disponível para estágio</strong><span>Respondo normalmente em até 24h</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CONTATO -->
-<section class="contact" id="contato">
-  <div class="wrap">
-    <div class="kicker">// contato</div>
-    <h2>Vamos Conversar?</h2>
-    <p class="lead" style="margin-left:auto;margin-right:auto;">Estou aberto a oportunidades de estágio, projetos e trocas sobre tecnologia. Entre em contato!</p>
-    <div class="contact-chips">
-      <a class="contact-chip" href="mailto:seuemail@exemplo.com">✉️ seuemail@exemplo.com</a>
-      <a class="contact-chip" href="https://linkedin.com/in/seunome" target="_blank" rel="noopener">💼 linkedin.com/in/seunome</a>
-      <a class="contact-chip" href="https://github.com/seunome" target="_blank" rel="noopener">🐙 github.com/seunome</a>
+</main>
+
+<!-- ================= RODAPÉ COM CONTATO ================= -->
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <a href="#topo" class="logo">igor<span>.dev</span></a>
+      <p class="footer-text">
+        Estudante de Ensino Médio Técnico em Informática, focado em
+        desenvolvimento front-end. Portfólio feito do zero com HTML, CSS e JavaScript.
+      </p>
     </div>
-    <footer>© 2026 Igor — Portfólio desenvolvido com dedicação e código.</footer>
+
+    <div class="footer-col">
+      <h4>Navegação</h4>
+      <nav class="footer-links" aria-label="Links do rodapé">
+        <a href="#sobre">Sobre</a>
+        <a href="#habilidades">Habilidades</a>
+        <a href="#projetos">Projetos</a>
+        <a href="#formacao">Formação</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </div>
+
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <ul class="footer-contact">
+        <li><span aria-hidden="true">✉️</span> <a href="mailto:seuemail@exemplo.com">seuemail@exemplo.com</a></li>
+        <li><span aria-hidden="true">📱</span> <a href="tel:+5531999999999">(31) 99999-9999</a></li>
+        <li><span aria-hidden="true">🐙</span> <a href="https://github.com/seunome" target="_blank" rel="noopener">github.com/seunome</a></li>
+        <li><span aria-hidden="true">💼</span> <a href="https://linkedin.com/in/seunome" target="_blank" rel="noopener">linkedin.com/in/seunome</a></li>
+        <li><span aria-hidden="true">📍</span> Minas Gerais, Brasil</li>
+      </ul>
+    </div>
   </div>
-</section>
+
+  <div class="wrap footer-bottom">
+    <span>© <span id="year">2026</span> Igor. Todos os direitos reservados.</span>
+    <span class="mono">Feito com ☕ e muito código</span>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">↑</button>
+
+<!-- ================= MODAL DE PROJETO ================= -->
+<div class="modal-overlay" id="modalProjeto" role="dialog" aria-modal="true" aria-labelledby="modalTitulo" hidden>
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="Fechar">✕</button>
+    <div class="modal-thumb" id="modalThumb"><span id="modalIcone">🌐</span></div>
+    <div class="modal-body">
+      <div class="modal-meta mono">
+        <span class="status-badge done" id="modalStatus">Concluído</span>
+        <span id="modalAno">2025</span>
+      </div>
+      <h3 id="modalTitulo">Título do projeto</h3>
+      <p id="modalDesc">Descrição do projeto.</p>
+
+      <h4 class="modal-sub">O que foi desenvolvido</h4>
+      <ul class="feature-list" id="modalFeatures"></ul>
+
+      <h4 class="modal-sub">Tecnologias usadas</h4>
+      <div class="tag-row" id="modalTags"></div>
+
+      <h4 class="modal-sub">O que eu aprendi</h4>
+      <p class="modal-learn" id="modalAprendi"></p>
+
+      <div class="modal-actions">
+        <a href="https://github.com/seunome" target="_blank" rel="noopener" class="btn btn-primary">Ver no GitHub</a>
+        <button class="btn btn-secondary" id="modalFechar2">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL DE ALERTA / SUCESSO ================= -->
+<div class="modal-overlay" id="modalAlerta" role="alertdialog" aria-modal="true" aria-labelledby="alertaTitulo" hidden>
+  <div class="modal modal-small">
+    <button class="modal-close" id="alertaClose" aria-label="Fechar">✕</button>
+    <div class="modal-body center">
+      <div class="alerta-icone" id="alertaIcone">✅</div>
+      <h3 id="alertaTitulo">Mensagem enviada!</h3>
+      <p id="alertaTexto">Obrigado pelo contato. Responderei em breve.</p>
+      <button class="btn btn-primary full" id="alertaOk">Entendi</button>
+    </div>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
 </html>
+
