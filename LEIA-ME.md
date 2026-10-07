@@ -1,5 +1,7 @@
 # Portfólio — Igor
 
+Site no ar: https://igormrgomes.github.io/portfolio/
+
 Site de uma página só, feito com HTML, CSS e JavaScript puros (sem bibliotecas).
 
 ## Arquivos (todos na MESMA pasta, ao lado do index.html)
@@ -11,6 +13,7 @@ Site de uma página só, feito com HTML, CSS e JavaScript puros (sem bibliotecas
 | `script.js` | Interações, formulário e modais dos projetos |
 | `Curriculo_Igor_de_Moura_Gomes.pdf` | Currículo (botões "Baixar currículo") |
 | `favicon.ico`, `favicon.svg`, `apple-touch-icon.png` | Ícone da aba e do iPhone |
+| `og-image.png` | Imagem que aparece quando o link é compartilhado (WhatsApp, LinkedIn) |
 | `icon-192.png`, `icon-512.png`, `site.webmanifest` | Ícone no Android / tela inicial |
 
 ## Prints dos projetos
