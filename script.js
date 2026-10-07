@@ -508,8 +508,13 @@ document.addEventListener('DOMContentLoaded', () => {
       body: new FormData(formulario),
       headers: { 'Accept': 'application/json' }
     })
-    .then((resposta) => {
-      if (!resposta.ok) throw new Error('Falha no envio: ' + resposta.status);
+    .then(async (resposta) => {
+      if (!resposta.ok) {
+        // Mostra no console (F12) o motivo que o Formspree devolveu
+        const detalhe = await resposta.json().catch(() => ({}));
+        console.error('Formspree recusou o envio:', resposta.status, detalhe);
+        throw new Error('Falha no envio: ' + resposta.status);
+      }
       soltarConfete();
       mostrarAlerta('sucesso', 'Mensagem enviada!', 'Obrigado pelo contato. Responderei em breve.');
       formulario.reset();
@@ -558,18 +563,29 @@ document.addEventListener('DOMContentLoaded', () => {
   const secoes   = document.querySelectorAll('section[id]');
   const linksNav = document.querySelectorAll('.nav-links a');
 
-  const observadorSecao = new IntersectionObserver((entradas) => {
-    entradas.forEach(entrada => {
-      if (entrada.isIntersecting) {
-        const id = entrada.target.getAttribute('id');
-        linksNav.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
-        });
-      }
+  // Seção ativa = a última cuja parte de cima já passou de uma linha de referência
+  // (funciona para seções de qualquer altura e também no fim da página)
+  let esperandoQuadro = false;
+  function atualizarSecaoAtiva() {
+    esperandoQuadro = false;
+    const linhaRef = window.scrollY + window.innerHeight * 0.3;
+    let atual = secoes[0].id;
+    secoes.forEach(s => {
+      if (s.getBoundingClientRect().top + window.scrollY <= linhaRef) atual = s.id;
     });
-  }, { threshold: 0.3, rootMargin: '-80px 0px -40% 0px' });
-
-  secoes.forEach(s => observadorSecao.observe(s));
+    const chegouNoFim = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+    if (chegouNoFim) atual = secoes[secoes.length - 1].id;
+    linksNav.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + atual);
+    });
+  }
+  function pedirAtualizacao() {
+    if (!esperandoQuadro) { esperandoQuadro = true; requestAnimationFrame(atualizarSecaoAtiva); }
+  }
+  window.addEventListener('scroll', pedirAtualizacao, { passive: true });
+  window.addEventListener('resize', pedirAtualizacao);
+  window.addEventListener('load', atualizarSecaoAtiva);
+  atualizarSecaoAtiva();
 
   const barraProgresso = document.getElementById('scrollProgress');
   const header  = document.getElementById('header');
