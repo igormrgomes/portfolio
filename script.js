@@ -5,7 +5,9 @@
    Interações escolhidas (requisito da atividade):
      1) TEXT TYPING  — efeito de digitação no hero
      2) ANIMATE ON SCROLL — elementos aparecem ao rolar
-     (extras: contadores, barras, filtro, modal, máscaras)
+     (extras: tilt 3D, cursor personalizado, botões magnéticos, ripple,
+      copiar contato, confete, indicador de menu, contadores, barras,
+      filtro animado, modal, máscaras)
    ========================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -19,6 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnTema = document.getElementById('themeToggle');
 
   btnTema.addEventListener('click', () => {
+    btnTema.classList.remove('girando');
+    void btnTema.offsetWidth;
+    btnTema.classList.add('girando');
+
     const atual = document.documentElement.getAttribute('data-tema');
     const novo  = atual === 'escuro' ? 'claro' : 'escuro';
 
@@ -63,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
      ================================================= */
   const typedEl = document.getElementById('typed');
   const frases = [
-    'Desenvolvedor Front-End em formação',
+    'Desenvolvedor Web em formação',
     'Estudante de Informática',
     'Apaixonado por código limpo',
     'Sempre aprendendo algo novo'
@@ -111,8 +117,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const observador = new IntersectionObserver((entradas) => {
     entradas.forEach((entrada, i) => {
       if (entrada.isIntersecting) {
-        setTimeout(() => entrada.target.classList.add('visible'), i * 80);
-        observador.unobserve(entrada.target);
+        const alvo = entrada.target;
+        setTimeout(() => {
+          alvo.classList.add('visible');
+          // Depois que a entrada termina, libera as transições de hover do próprio elemento
+          setTimeout(() => alvo.classList.remove('reveal', 'visible'), 900);
+        }, i * 80);
+        observador.unobserve(alvo);
       }
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
@@ -183,63 +194,113 @@ document.addEventListener('DOMContentLoaded', () => {
       const filtro = botao.dataset.filter;
       cardsProjeto.forEach(card => {
         const cats = card.dataset.cat.split(' ');
-        card.classList.toggle('hidden', filtro !== 'todos' && !cats.includes(filtro));
+        const mostrar = filtro === 'todos' || cats.includes(filtro);
+        const estavaVisivel = !card.classList.contains('hidden');
+
+        if (mostrar && !estavaVisivel) {
+          card.classList.remove('hidden');
+          card.classList.remove('entrando');
+          void card.offsetWidth; // reinicia a animação
+          card.classList.add('entrando');
+        } else if (!mostrar && estavaVisivel) {
+          card.classList.add('saindo');
+          setTimeout(() => {
+            card.classList.add('hidden');
+            card.classList.remove('saindo');
+          }, 280);
+        }
       });
     });
   });
 
 
   /* =================================================
+     7B. INTERAÇÃO EXTRA — TILT 3D COM O MOUSE (foto)
+     ================================================= */
+  const fotoWrap = document.querySelector('.about-visual');
+  const foto     = document.querySelector('.photo-frame');
+
+  if (fotoWrap && foto && !prefereMenosMovimento && window.matchMedia('(hover: hover)').matches) {
+    fotoWrap.addEventListener('mousemove', (e) => {
+      const rect = fotoWrap.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;   // 0 a 1
+      const y = (e.clientY - rect.top) / rect.height;   // 0 a 1
+
+      const rotY = (x - 0.5) * 16;  // graus para os lados
+      const rotX = (0.5 - y) * 16;  // graus para cima/baixo
+
+      foto.style.setProperty('--ry', rotY.toFixed(2) + 'deg');
+      foto.style.setProperty('--rx', rotX.toFixed(2) + 'deg');
+    });
+
+    fotoWrap.addEventListener('mouseleave', () => {
+      foto.style.setProperty('--ry', '0deg');
+      foto.style.setProperty('--rx', '0deg');
+    });
+  }
+
+
+  /* =================================================
      8. MODAL DE PROJETOS
      ================================================= */
+  /* Ícones SVG (usam o sprite que está no começo do index.html) */
+  function icone(nome) {
+    return '<svg class="icon" aria-hidden="true"><use href="#i-' + nome + '"/></svg>';
+  }
+
   const dadosProjetos = {
-    landing: {
-      icone: '🌐',
-      titulo: 'Landing Page Responsiva',
+    moneyup: {
+      icone: 'wallet',
+      titulo: 'MoneyUp — Landing Page',
       ano: '2025',
       status: 'Concluído',
       statusClasse: 'done',
-      desc: 'Site institucional completo desenvolvido do zero, com foco em responsividade e experiência do usuário. Funciona perfeitamente em celular, tablet e desktop.',
+      desc: 'Landing page para o MoneyUp, um app fictício de educação financeira que transforma organizar dinheiro em algo parecido com um jogo: metas, progresso e conquistas em vez de planilha.',
       features: [
-        'Layout construído com CSS Grid e Flexbox',
-        'Menu hambúrguer animado em JavaScript puro',
-        'Animações de entrada conforme o usuário rola a página',
-        'Formulário de contato com validação em tempo real'
+        'Seções de problema, solução e funcionalidades do produto',
+        'Comparativo entre planilha, apps comuns e o MoneyUp',
+        'Formulário de lista de espera para acesso antecipado',
+        'Layout 100% responsivo, do celular ao desktop'
       ],
       tags: ['HTML5', 'CSS3', 'JavaScript', 'Responsivo'],
-      aprendi: 'Aprendi na prática como planejar um layout mobile-first e a importância das media queries. Também entendi melhor como organizar o CSS usando variáveis para manter tudo consistente.'
+      aprendi: 'Foi meu primeiro projeto de landing page pensada para converter — precisei estruturar o conteúdo em uma ordem que faz sentido para quem nunca ouviu falar do produto: problema, solução, prova e chamada para ação.',
+      demo: 'https://igormrgomes.github.io/MoneyUp/',
+      repo: 'https://github.com/igormrgomes/MoneyUp'
     },
-    cadastro: {
-      icone: '📝',
-      titulo: 'Sistema de Cadastro',
-      ano: '2025',
+    foco: {
+      icone: 'kanban',
+      titulo: 'Foco — Quadro de Tarefas',
+      ano: '2026',
       status: 'Concluído',
       statusClasse: 'done',
-      desc: 'Aplicação de cadastro de usuários conectada a um banco de dados, permitindo inserir, listar, editar e excluir registros (CRUD completo).',
+      desc: 'Quadro de tarefas estilo Kanban para organizar o dia em três colunas. Cada tarefa tem prioridade e prazo, e tudo fica salvo no próprio navegador.',
       features: [
-        'Modelagem das tabelas e relacionamentos no banco',
-        'Consultas SQL para todas as operações do CRUD',
-        'Validação dos campos antes de salvar',
-        'Listagem dinâmica dos registros cadastrados'
+        'Três colunas e tarefas com prioridade (alta, média ou baixa) e prazo',
+        'Busca por texto e filtro por prioridade',
+        'Edição das tarefas em uma janela própria',
+        'Tema escuro e exportação das tarefas em JSON'
       ],
-      tags: ['JavaScript', 'SQL', 'Banco de Dados', 'CRUD'],
-      aprendi: 'Foi meu primeiro contato real com persistência de dados. Entendi como o front-end conversa com o banco e por que validar os dados dos dois lados é tão importante.'
+      tags: ['HTML5', 'CSS3', 'JavaScript', 'localStorage'],
+      aprendi: 'Foi o projeto em que mais trabalhei com estado: manter a lista de tarefas organizada, salvar no navegador e redesenhar a tela a cada mudança sem perder nada.',
+      demo: 'https://igormrgomes.github.io/foco/',
+      repo: 'https://github.com/igormrgomes/foco'
     },
-    jogo: {
-      icone: '🎮',
-      titulo: 'Mini Jogo em JavaScript',
+    tempo: {
+      icone: 'cloud-sun',
+      titulo: 'Tempo — Previsão do Tempo',
       ano: '2026',
-      status: 'Em progresso',
-      statusClasse: 'progress',
-      desc: 'Jogo interativo que roda direto no navegador, sem bibliotecas externas. Um projeto pessoal para praticar lógica de programação de um jeito divertido.',
+      status: 'Concluído',
+      statusClasse: 'done',
+      desc: 'App de previsão do tempo de qualquer cidade, usando os dados da API Open-Meteo, que é gratuita e não exige chave de acesso.',
       features: [
-        'Controle do personagem pelo teclado',
-        'Sistema de pontuação e níveis de dificuldade',
-        'Detecção de colisão entre elementos',
-        'Manipulação intensa do DOM e de eventos'
+        'Busca da previsão pelo nome da cidade',
+        'Botão para usar a localização do próprio aparelho',
+        'Dados reais vindos de uma API pública'
       ],
-      tags: ['JavaScript', 'DOM', 'Lógica', 'Animação'],
-      aprendi: 'Esse projeto me forçou a pensar em lógica de verdade: loops de jogo, estados e condições. É o que mais me desafia até agora, e por isso o que mais me ensina.'
+      tags: ['HTML5', 'CSS3', 'JavaScript', 'API REST'],
+      aprendi: 'Foi meu primeiro projeto consumindo uma API de verdade: aprendi a fazer requisições com fetch, tratar a resposta e lidar com erros, como cidade não encontrada.',
+      demo: 'https://igormrgomes.github.io/tempo/',
+      repo: 'https://github.com/igormrgomes/tempo'
     }
   };
 
@@ -253,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const dados = dadosProjetos[botao.dataset.projeto];
       if (!dados) return;
 
-      document.getElementById('modalIcone').textContent  = dados.icone;
+      document.getElementById('modalIcone').innerHTML = icone(dados.icone);
       document.getElementById('modalTitulo').textContent = dados.titulo;
       document.getElementById('modalAno').textContent    = dados.ano;
       document.getElementById('modalDesc').textContent   = dados.desc;
@@ -262,6 +323,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const badge = document.getElementById('modalStatus');
       badge.textContent = dados.status;
       badge.className = 'status-badge ' + dados.statusClasse;
+
+      // Botão "Ver site no ar" — só aparece se o projeto tiver link ao vivo
+      const btnDemo = document.getElementById('modalDemo');
+      if (dados.demo) {
+        btnDemo.href = dados.demo;
+        btnDemo.hidden = false;
+      } else {
+        btnDemo.hidden = true;
+      }
+
+      // Botão do GitHub — usa o repositório do projeto, ou o perfil como padrão
+      document.getElementById('modalGithub').href = dados.repo || 'https://github.com/igormrgomes';
 
       // Monta a lista de funcionalidades
       const listaFeatures = document.getElementById('modalFeatures');
@@ -417,39 +490,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!valido) {
       // MODAL FAZENDO PAPEL DE ALERTA
-      mostrarAlerta('⚠️', 'Ops, faltou alguma coisa', 'Verifique os campos destacados em vermelho e tente novamente.');
+      mostrarAlerta('aviso', 'Ops, faltou alguma coisa', 'Verifique os campos destacados em vermelho e tente novamente.');
       return;
     }
 
     /* ------------------------------------------------------
-       Este site é apenas front-end, então não há servidor
-       para receber a mensagem.
-
-       Para receber de verdade, use o Formspree (gratuito):
-       1. Crie uma conta em formspree.io e copie sua URL
-       2. Descomente o bloco fetch() abaixo e cole a URL
+       Envio real pelo Formspree. O endereço vem do atributo
+       action do <form> no index.html.
        ------------------------------------------------------ */
+    const botaoEnviar = document.getElementById('btnEnviar');
+    const textoBotao = botaoEnviar.textContent;
+    botaoEnviar.disabled = true;
+    botaoEnviar.textContent = 'Enviando...';
 
-    /*
-    fetch('https://formspree.io/f/SEUCODIGO', {
+    fetch(formulario.action, {
       method: 'POST',
       body: new FormData(formulario),
       headers: { 'Accept': 'application/json' }
     })
-    .then(() => {
-      mostrarAlerta('✅', 'Mensagem enviada!', 'Obrigado pelo contato. Responderei em breve.');
+    .then((resposta) => {
+      if (!resposta.ok) throw new Error('Falha no envio: ' + resposta.status);
+      soltarConfete();
+      mostrarAlerta('sucesso', 'Mensagem enviada!', 'Obrigado pelo contato. Responderei em breve.');
       formulario.reset();
+      formulario.querySelectorAll('.valid').forEach((c) => c.classList.remove('valid'));
       contadorChars.textContent = '0 / 500';
     })
     .catch(() => {
-      mostrarAlerta('❌', 'Erro no envio', 'Algo deu errado. Tente novamente ou me chame pelo e-mail.');
+      mostrarAlerta('erro', 'Erro no envio', 'Algo deu errado. Tente novamente ou me chame pelo e-mail.');
+    })
+    .finally(() => {
+      botaoEnviar.disabled = false;
+      botaoEnviar.textContent = textoBotao;
     });
-    */
-
-    // Enquanto o Formspree não está configurado:
-    mostrarAlerta('✅', 'Mensagem validada!', 'Todos os campos estão corretos. Configure o Formspree no script.js para receber as mensagens de verdade.');
-    formulario.reset();
-    contadorChars.textContent = '0 / 500';
   });
 
   function mostrarErro(id, texto) {
@@ -462,8 +535,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('err-' + id).textContent = '';
   }
 
-  function mostrarAlerta(icone, titulo, texto) {
-    document.getElementById('alertaIcone').textContent = icone;
+  const iconesAlerta = { sucesso: 'check-circle', erro: 'x-circle', aviso: 'alert-triangle' };
+
+  function mostrarAlerta(tipo, titulo, texto) {
+    const alvo = document.getElementById('alertaIcone');
+    alvo.className = 'alerta-icone ' + tipo;
+    alvo.innerHTML = icone(iconesAlerta[tipo] || 'check-circle');
     document.getElementById('alertaTitulo').textContent = titulo;
     document.getElementById('alertaTexto').textContent = texto;
     abrirModal(modalAlerta);
@@ -505,6 +582,12 @@ document.addEventListener('DOMContentLoaded', () => {
     barraProgresso.style.width = (alturaTotal > 0 ? (rolagem / alturaTotal) * 100 : 0) + '%';
     header.classList.toggle('scrolled', rolagem > 20);
     btnTopo.classList.toggle('visible', rolagem > 500);
+
+    // Anel de progresso ao redor do botão (131.95 = circunferência do círculo)
+    const anel = document.getElementById('progressRingFill');
+    if (anel && alturaTotal > 0) {
+      anel.style.strokeDashoffset = 131.95 * (1 - rolagem / alturaTotal);
+    }
   }, { passive: true });
 
   btnTopo.addEventListener('click', () => {
@@ -512,10 +595,214 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
+
+  /* =================================================
+     13. MICRO-INTERAÇÕES (mouse, toque e detalhes)
+     ================================================= */
+  const temMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  /* ---------- 13.1 Toast (aviso flutuante) ---------- */
+  const toastEl = document.getElementById('toast');
+  let toastTimer = null;
+
+  function mostrarToast(texto) {
+    toastEl.innerHTML = icone('check');
+    toastEl.append(document.createTextNode(texto));
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200);
+  }
+
+  /* ---------- 13.2 Copiar e-mail / telefone ---------- */
+  document.querySelectorAll('.copy-btn').forEach(botao => {
+    botao.addEventListener('click', async () => {
+      const texto = botao.dataset.copy;
+      try {
+        await navigator.clipboard.writeText(texto);
+      } catch (e) {
+        // Plano B para navegadores sem a API de área de transferência
+        const temp = document.createElement('textarea');
+        temp.value = texto;
+        temp.style.position = 'fixed';
+        temp.style.opacity = '0';
+        document.body.appendChild(temp);
+        temp.select();
+        try { document.execCommand('copy'); } catch (err) { /* ignora */ }
+        temp.remove();
+      }
+      botao.classList.add('copiado');
+      mostrarToast('Copiado: ' + texto);
+      setTimeout(() => botao.classList.remove('copiado'), 1600);
+    });
+  });
+
+  /* ---------- 13.3 Efeito ripple (onda ao clicar) ---------- */
+  const alvosRipple = '.btn, .filter-btn, .overlay-btn, .copy-btn, .theme-toggle, .social-link';
+
+  document.querySelectorAll(alvosRipple).forEach(el => {
+    el.addEventListener('pointerdown', (e) => {
+      if (prefereMenosMovimento) return;
+      const rect = el.getBoundingClientRect();
+      const tamanho = Math.max(rect.width, rect.height);
+      const onda = document.createElement('span');
+      onda.className = 'ripple-wave';
+      onda.style.width = onda.style.height = tamanho + 'px';
+      onda.style.left = (e.clientX - rect.left - tamanho / 2) + 'px';
+      onda.style.top  = (e.clientY - rect.top - tamanho / 2) + 'px';
+      el.appendChild(onda);
+      setTimeout(() => onda.remove(), 700);
+    });
+  });
+
+  /* ---------- 13.4 Brilho que segue o mouse nos cards ---------- */
+  document.querySelectorAll('.skill-card, .timeline-card, .cert-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+    });
+  });
+
+  /* ---------- 13.5 Holofote no hero ---------- */
+  const heroSecao = document.querySelector('.hero');
+  if (heroSecao && temMouse && !prefereMenosMovimento) {
+    heroSecao.addEventListener('mousemove', (e) => {
+      const rect = heroSecao.getBoundingClientRect();
+      heroSecao.style.setProperty('--sx', (e.clientX - rect.left) + 'px');
+      heroSecao.style.setProperty('--sy', (e.clientY - rect.top) + 'px');
+    });
+  }
+
+  /* ---------- 13.6 Tilt 3D nos cards de projeto ---------- */
+  if (temMouse && !prefereMenosMovimento) {
+    document.querySelectorAll('.tilt-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.classList.add('tilting');
+        card.style.transform =
+          `perspective(900px) rotateX(${(-y * 8).toFixed(2)}deg) rotateY(${(x * 8).toFixed(2)}deg) translateY(-6px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.classList.remove('tilting');
+        card.style.transform = '';
+      });
+    });
+  }
+
+  /* ---------- 13.7 Botões magnéticos ---------- */
+  if (temMouse && !prefereMenosMovimento) {
+    document.querySelectorAll('.btn-primary, .btn-secondary, .theme-toggle, .social-link, .back-to-top').forEach(el => {
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const dx = (e.clientX - (rect.left + rect.width / 2)) * 0.22;
+        const dy = (e.clientY - (rect.top + rect.height / 2)) * 0.28;
+        el.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)`;
+      });
+      el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+    });
+  }
+
+  /* ---------- 13.8 Cursor personalizado ---------- */
+  const cursorDot  = document.getElementById('cursorDot');
+  const cursorRing = document.getElementById('cursorRing');
+
+  if (temMouse && !prefereMenosMovimento && cursorDot && cursorRing) {
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0, primeiroMovimento = true;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (primeiroMovimento) {
+        // Evita o cursor "piscar" no canto da tela antes do primeiro movimento
+        ringX = mouseX; ringY = mouseY;
+        primeiroMovimento = false;
+        document.body.classList.add('cursor-ativo');
+      }
+      cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+    });
+
+    // O anel "persegue" o ponto com um pequeno atraso (efeito suave)
+    (function animarAnel() {
+      ringX += (mouseX - ringX) * 0.16;
+      ringY += (mouseY - ringY) * 0.16;
+      cursorRing.style.transform = `translate(${ringX}px, ${ringY}px)`;
+      requestAnimationFrame(animarAnel);
+    })();
+
+    const clicaveis = 'a, button, input, textarea, select, label, .tilt-card, .chip, .stat';
+
+    document.addEventListener('mouseover', (e) => {
+      cursorRing.classList.toggle('hover', !!e.target.closest(clicaveis));
+    });
+    document.addEventListener('mousedown', () => cursorRing.classList.add('click'));
+    document.addEventListener('mouseup',   () => cursorRing.classList.remove('click'));
+
+    // Some quando o mouse sai da janela
+    document.documentElement.addEventListener('mouseleave', () => document.body.classList.remove('cursor-ativo'));
+    document.documentElement.addEventListener('mouseenter', () => {
+      if (!primeiroMovimento) document.body.classList.add('cursor-ativo');
+    });
+  }
+
+  /* ---------- 13.9 Indicador deslizante do menu ---------- */
+  const indicador = document.getElementById('navIndicator');
+
+  function posicionarIndicador() {
+    const ativo = navLinks.querySelector('a.active:not(.nav-cta)');
+    if (!ativo || !indicador || window.innerWidth <= 860) {
+      if (indicador) indicador.classList.remove('show');
+      return;
+    }
+    indicador.style.left  = ativo.offsetLeft + 'px';
+    indicador.style.width = ativo.offsetWidth + 'px';
+    indicador.classList.add('show');
+  }
+
+  // Sempre que um link ganha/perde a classe "active", o indicador acompanha
+  // (observa só os links — nunca o próprio indicador, senão ele dispara a si mesmo em loop)
+  const observadorMenu = new MutationObserver(posicionarIndicador);
+  navLinks.querySelectorAll('a').forEach(link => {
+    observadorMenu.observe(link, { attributes: true, attributeFilter: ['class'] });
+  });
+  window.addEventListener('resize', posicionarIndicador);
+  window.addEventListener('load', posicionarIndicador);
+
+  /* ---------- 13.10 Confete de comemoração ---------- */
+  function soltarConfete() {
+    if (prefereMenosMovimento) return;
+    const cores = ['#8B7CF6', '#22D3EE', '#4ADE80', '#FBBF24', '#F87171', '#60A5FA'];
+    for (let i = 0; i < 70; i++) {
+      const p = document.createElement('div');
+      p.className = 'confete';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.background = cores[Math.floor(Math.random() * cores.length)];
+      p.style.animationDuration = (2.2 + Math.random() * 2) + 's';
+      p.style.animationDelay = (Math.random() * 0.4) + 's';
+      p.style.transform = `rotate(${Math.random() * 360}deg)`;
+      p.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 4800);
+    }
+  }
+
+  /* ---------- 13.11 Validação positiva (borda verde) ---------- */
+  const regrasValidas = {
+    nome:     v => v.trim().length >= 2,
+    telefone: v => v.replace(/\D/g, '').length >= 10,
+    email:    v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())
+  };
+  Object.keys(regrasValidas).forEach(id => {
+    const campo = document.getElementById(id);
+    campo.addEventListener('input', () => {
+      campo.classList.toggle('valid', regrasValidas[id](campo.value));
+    });
+  });
+
   /* =================================================
      12. ANO AUTOMÁTICO NO RODAPÉ
      ================================================= */
   document.getElementById('year').textContent = new Date().getFullYear();
 
 });
-
